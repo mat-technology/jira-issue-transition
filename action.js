@@ -17,25 +17,37 @@ module.exports = class {
   async execute () {
     const { argv } = this
 
-    const issueId = argv.issue
+    var issueIds = argv.issues
+      
+    if (typeof issueIds === "string") {
+      issueIds = issueIds.split(/ +| *, */)
+    }
+    console.log('Issue IDs found:.', issueIds)
+    for (var issueId of issueIds) {
+      await this.transitionIssue(issueId, argv.transitionId, argv.transition)
+    }
+
+    return {}
+  }
+
+  async transitionIssue (issueId, transitionId, transitionName) {
     const { transitions } = await this.Jira.getIssueTransitions(issueId)
 
     const transitionToApply = _.find(transitions, (t) => {
-      if (t.id === argv.transitionId) return true
-      if (t.name.toLowerCase() === argv.transition.toLowerCase()) return true
+      if (t.id === transitionId) return true
+      if (t.name.toLowerCase() === transitionName.toLowerCase()) return true
     })
 
     if (!transitionToApply) {
       console.log('Please specify transition name or transition id.')
-      console.log('Possible transitions:')
+      console.log(`Possible transitions for issue  ${issueId}:`)
       transitions.forEach((t) => {
         console.log(`{ id: ${t.id}, name: ${t.name} } transitions issue to '${t.to.name}' status.`)
       })
-
       return
     }
 
-    console.log(`Selected transition:${JSON.stringify(transitionToApply, null, 4)}`)
+    console.log(`Selected transition: ${JSON.stringify(transitionToApply, null, 4)}`)
 
     await this.Jira.transitionIssue(issueId, {
       transition: {
@@ -51,4 +63,5 @@ module.exports = class {
 
     return {}
   }
+
 }

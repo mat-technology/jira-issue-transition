@@ -1,17 +1,17 @@
 name: Jira Issue Transition
-description: Change status of specific Jira issue
+description: Change status of specific Jira issues
 branding:
   icon: 'chevron-right'
   color: 'blue'
 inputs:
-  issue:
-    description: Key of the issue to be transitioned
+  issues:
+    description: Keys of the issues to be transitioned, as a list or a comma/space separated string
     required: true
   transition:
-    description: The transition to apply to the issue, e.g. 'In Progress'
+    description: The transition to apply to the issues, e.g. 'In Progress'
     required: false
   transitionId:
-    description: The id of a transition to apply to the issue
+    description: The id of a transition to apply to the issues
     required: false
 runs:
   using: 'node12'

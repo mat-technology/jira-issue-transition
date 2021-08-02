@@ -1,8 +1,10 @@
 # Jira Transition
 Transition Jira issue
 
-For examples on how to use this, check out the [gajira-demo](https://github.com/atlassian/gajira-demo) repository
-> ##### Only supports Jira Cloud. Does not support Jira Server (hosted)
+
+This action is based on code from https://github.com/atlassian/gajira-transition and was forked to add these features:
+
+* support for multiple issues
 
 ## Usage
 
@@ -15,14 +17,18 @@ Example transition action:
 ```yaml
 - name: Transition issue
   id: transition
-  uses: atlassian/gajira-transition@master
+  uses: mat-technology/jira-issue-transition@master
   with:
-    issue: GA-181
+    issues: RPR-181
     transition: "In progress"
 }
 ```
 
-The `issue` parameter can be an issue id created or retrieved by an upstream action – for example, [`Create`](https://github.com/marketplace/actions/jira-create) or [`Find Issue Key`](https://github.com/marketplace/actions/jira-find). Here is full example workflow:
+The `issues` parameter can be an issue id created or retrieved by an upstream
+action – for example,
+[`Create`](https://github.com/marketplace/actions/jira-create) or [`Find Issue
+Key`](https://github.com/marketplace/actions/jira-find). Here is full example
+workflow:
 
 ```yaml
 on:
@@ -41,7 +47,7 @@ jobs:
         JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
         JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        
+
     - name: Create new issue
       id: create
       uses: atlassian/gajira-create@master
@@ -49,7 +55,7 @@ jobs:
     - name: Transition issue
       uses: atlassian/gajira-transition@master
       with:
-        issue: ${{ steps.create.outputs.issue }}
+        issues: ${{ steps.create.outputs.issue }}
         transition: "In progress"
 ```
 ----
@@ -59,8 +65,8 @@ jobs:
 - None
 
 ### Inputs
-- `issue` (required) - issue key to perform a transition on
-- `transition` - Case insensetive name of transition to apply. Example: `Cancel` or `Accept`
+- `issues` (required) - list of issue keys to perform a transition on, as list or comma/space separated string
+- `transition` - Case insensitive name of transition to apply. Example: `Cancel` or `Accept`
 - `transitionId` - transition id to apply to an issue
 
 ### Outputs
