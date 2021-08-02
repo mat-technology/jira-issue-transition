@@ -10,8 +10,6 @@ This action is based on code from https://github.com/atlassian/gajira-transition
 
 > ##### Note: this action requires [Jira Login Action](https://github.com/marketplace/actions/jira-login)
 
-![Issue Transition](../assets/example.gif?raw=true)
-
 Example transition action:
 
 ```yaml
@@ -53,7 +51,7 @@ jobs:
       uses: atlassian/gajira-create@master
 
     - name: Transition issue
-      uses: atlassian/gajira-transition@master
+      uses: mat-technology/jira-issue-transition@master
       with:
         issues: ${{ steps.create.outputs.issue }}
         transition: "In progress"
