@@ -76,3 +76,14 @@ jobs:
 
 ### Writes fields to config file at $HOME/jira/config.yml
 - None
+
+
+## Changes:
+
+After making any changes to the code, you need to rebuild dist/index.js by doing:
+
+```bash
+
+ncc build index.js
+
+```
